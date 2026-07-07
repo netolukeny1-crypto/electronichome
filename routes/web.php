@@ -121,19 +121,8 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/sair', LogoutController::class)
     ->name('sair');
 
-    use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-
-Route::get('/reset-admin', function () {
-
-    $user = User::where('email', 'admin@electronichome.com')->first();
-
-    if (!$user) {
-        return 'Utilizador não encontrado.';
-    }
-
-    $user->password = Hash::make('Admin123');
-    $user->save();
-
-    return 'Password alterada com sucesso!';
+    use App\Models\User;
+    
+    Route::get('/reset-admin', function () {
+    return User::select('id', 'name', 'email')->get();
 });
