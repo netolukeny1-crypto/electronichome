@@ -122,7 +122,14 @@ Route::post('/sair', LogoutController::class)
     ->name('sair');
 
     use App\Models\User;
-    
+    use Illuminate\Support\Facades\Hash;
+
     Route::get('/reset-admin', function () {
-    return User::select('id', 'name', 'email')->get();
+     $user = User::create([
+        'name' => 'Admin',
+        'email' => 'admin@electronichome.com',
+        'password' => Hash::make('Admin123'),
+    ]);
+
+    return $user;
 });
