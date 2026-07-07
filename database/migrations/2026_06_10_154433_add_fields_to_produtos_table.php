@@ -10,12 +10,19 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::table('produtos', function (Blueprint $table) {
-        $table->text('descricao')->nullable();
-        $table->string('imagem')->nullable();
-    });
-}
+    {
+        Schema::table('produtos', function (Blueprint $table) {
+
+            if (!Schema::hasColumn('produtos', 'descricao')) {
+                $table->text('descricao')->nullable();
+            }
+
+            if (!Schema::hasColumn('produtos', 'imagem')) {
+                $table->string('imagem')->nullable();
+            }
+
+        });
+    }
 
     /**
      * Reverse the migrations.
@@ -23,7 +30,15 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('produtos', function (Blueprint $table) {
-            //
+
+            if (Schema::hasColumn('produtos', 'descricao')) {
+                $table->dropColumn('descricao');
+            }
+
+            if (Schema::hasColumn('produtos', 'imagem')) {
+                $table->dropColumn('imagem');
+            }
+
         });
     }
 };
