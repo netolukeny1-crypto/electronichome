@@ -9,22 +9,32 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-{
-    Schema::table('pagamentos', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::table('pagamentos', function (Blueprint $table) {
 
-        $table->string('numero_recibo')->nullable();
+            if (!Schema::hasColumn('pagamentos', 'numero_recibo')) {
+                $table->string('numero_recibo')->nullable();
+            }
 
-        $table->string('metodo_pagamento')
-              ->default('Numerário');
+            if (!Schema::hasColumn('pagamentos', 'metodo_pagamento')) {
+                $table->string('metodo_pagamento')
+                      ->default('Numerário');
+            }
 
-        $table->text('observacao')
-              ->nullable();
+            if (!Schema::hasColumn('pagamentos', 'observacao')) {
+                $table->text('observacao')
+                      ->nullable();
+            }
 
-        $table->unsignedBigInteger('user_id')
-              ->nullable();
-    });
-}
+            if (!Schema::hasColumn('pagamentos', 'user_id')) {
+                $table->unsignedBigInteger('user_id')
+                      ->nullable();
+            }
+
+        });
+    }
+
 
     /**
      * Reverse the migrations.
@@ -32,7 +42,23 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pagamentos', function (Blueprint $table) {
-            //
+
+            if (Schema::hasColumn('pagamentos', 'numero_recibo')) {
+                $table->dropColumn('numero_recibo');
+            }
+
+            if (Schema::hasColumn('pagamentos', 'metodo_pagamento')) {
+                $table->dropColumn('metodo_pagamento');
+            }
+
+            if (Schema::hasColumn('pagamentos', 'observacao')) {
+                $table->dropColumn('observacao');
+            }
+
+            if (Schema::hasColumn('pagamentos', 'user_id')) {
+                $table->dropColumn('user_id');
+            }
+
         });
     }
 };
